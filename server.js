@@ -12,15 +12,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve static files from public folder
-app.use(express.static("public"));
+// Serve all files from root (no public folder)
+app.use(express.static(__dirname));
 
-// Root route to serve index.html
+// Root route to serve index.html from root
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-const upload = multer({ dest: "public/images/" });
+const upload = multer({ dest: "images/" }); // images folder in root
 
 // Load products and orders
 let products = JSON.parse(fs.readFileSync("products.json"));
@@ -137,7 +137,7 @@ function sendReceipt(order) {
     `,
     attachments: [{
       filename: "logo.png",
-      path: "public/images/logo.png",
+      path: "images/logo.png",
       cid: "logo"
     }]
   });
@@ -158,7 +158,7 @@ function sendTracking(order) {
     `,
     attachments: [{
       filename: "logo.png",
-      path: "public/images/logo.png",
+      path: "images/logo.png",
       cid: "logo"
     }]
   });
